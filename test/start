@@ -1,0 +1,16 @@
+#!/bin/sh
+# Компиллируем и стартуем имеено отсюда, с корня
+clear
+echo ---START---
+echo compile MYLIB
+javac ./lib/mylib.java
+
+echo compile TEST
+javac ./mypact/test.java
+
+echo start TEST
+echo
+java mypact.test
+
+echo ---END---
+read a

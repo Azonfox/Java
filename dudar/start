@@ -1,0 +1,20 @@
+#!/bin/sh
+# Компиллируем и стартуем имеено отсюда, с корня
+clear
+echo ---START---
+echo compile Main
+javac ./sample/Main.java
+
+echo compile Controller
+javac ./sample/Controller.java
+
+echo compile Questions
+javac ./sample/Questions.java
+
+echo start!
+echo Не работает:    java sample.Main
+echo Но Работает:    java Main.java ...........
+java Main.java
+
+echo ---END---
+read a
