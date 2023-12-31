@@ -1,0 +1,75 @@
+// Display fonts.
+import java.awt.*;
+import java.awt.event.*;
+
+public class SampleFonts extends Frame {
+  int next = 0;
+  Font f;
+  String msg;
+
+  public SampleFonts() {
+    f = new Font("Dialog", Font.BOLD, 18);
+    msg = "Dialog";
+    setFont(f);
+
+    addMouseListener(new MyMouseAdapter(this));
+
+    addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent we) {
+        System.exit(0);
+      }
+    });
+  }
+
+  public void paint(Graphics g) {
+    g.drawString(msg, 10, 60);
+  }
+
+  public static void main(String[] args) {
+    SampleFonts appwin = new SampleFonts();
+
+    appwin.setSize(new Dimension(500, 100));
+    appwin.setTitle("SampleFonts");
+    appwin.setVisible(true);
+  }
+}
+
+class MyMouseAdapter extends MouseAdapter {
+  SampleFonts sampleFonts;
+
+  public MyMouseAdapter(SampleFonts sampleFonts) {
+    this.sampleFonts = sampleFonts;
+  }
+
+  public void mousePressed(MouseEvent me) {
+    // Switch fonts with each mouse click.
+    sampleFonts.next++;
+
+    switch(sampleFonts.next) {
+      case 0:
+        sampleFonts.f = new Font("Dialog", Font.BOLD, 18);
+        sampleFonts.msg = "Dialog";
+        break;
+      case 1:
+        sampleFonts.f = new Font("DialogInput", Font.BOLD, 18);
+        sampleFonts.msg = "DialogInput";
+        break;
+      case 2:
+        sampleFonts.f = new Font("SansSerif", Font.BOLD, 18);
+        sampleFonts.msg = "SansSerif";
+        break;
+      case 3:
+        sampleFonts.f = new Font("Serif", Font.BOLD, 18);
+        sampleFonts.msg = "Serif";
+        break;
+      case 4:
+        sampleFonts.f = new Font("Monospaced", Font.BOLD, 18);
+        sampleFonts.msg = "Monospaced";
+        break;
+    }
+
+    if(sampleFonts.next == 4) sampleFonts.next = -1;
+    sampleFonts.setFont(sampleFonts.f);
+    sampleFonts.repaint();
+  }
+}
