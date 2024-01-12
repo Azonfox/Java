@@ -2,16 +2,13 @@
 # Компиллируем и стартуем имеено отсюда, с корня
 clear
 echo ---START---
-echo compile MYLIB
-javac ./lib/mylib.java
+echo compile DATCHIK
+javac ./datchik.java
 
-echo compile TEST
-javac ./mypact/test.java
-
-echo start TEST
+echo start datchik.class
 echo
-#java mypact.test
-java mypact.test2
+java datchik
 
+echo
 echo ---END---
 read a
