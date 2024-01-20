@@ -1,0 +1,14 @@
+#!/bin/sh
+# Компиллируем и стартуем имеено отсюда, с корня
+clear
+echo ---START---
+echo compile dbfile
+javac ./dbfile.java
+
+echo start dbfile.class
+echo
+java dbfile
+
+echo
+echo ---END---
+read a
