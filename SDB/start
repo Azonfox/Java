@@ -2,12 +2,12 @@
 # Компиллируем и стартуем имеено отсюда, с корня
 clear
 echo ---START---
-echo compile dbfile
-javac ./dbfile.java
+echo compile dbfields
+javac ./dbfields.java
 
-echo start dbfile.class
+echo RUN
 echo
-java dbfile
+java dbfields
 
 echo
 echo ---END---
