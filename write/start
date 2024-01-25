@@ -1,0 +1,14 @@
+#!/bin/sh
+# Компиллируем и стартуем имеено отсюда, с корня
+clear
+echo ---START---
+echo compile 
+javac ./testwrite.java
+
+echo RUN
+echo
+java testwrite
+
+echo
+echo ---END---
+read a
