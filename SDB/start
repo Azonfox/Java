@@ -2,7 +2,9 @@
 # Компиллируем и стартуем имеено отсюда, с корня
 clear
 echo ---START---
-echo compile dbfields
+echo compile 
+javac ./Head.java
+javac ./Fields.java
 javac ./dbfields.java
 
 echo RUN
