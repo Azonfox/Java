@@ -12,3 +12,4 @@ java dbfields
 echo
 echo ---END---
 read a
+rm *.class

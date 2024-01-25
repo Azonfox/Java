@@ -13,6 +13,7 @@ class testwrite {
     String buffer  = new String();
     buffer="BSILFDC* - тестовая строка";
 
+    // Изначально удалим файл, иначе мусор и накладки
     File filedel = new File("dbf1.txt");
     if(filedel.delete()){
         System.out.println("Файл данных удален-очистка!");

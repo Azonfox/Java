@@ -2,94 +2,144 @@
 import java.io.*;
 
 class dbHead{
-    byte vers;	  // Версия 
-    int datapos;  // Адрес начала данных
-    int recleng;  // Длина записи с флагом
-    int reccount; // Количество записей в базе
-    int reserv=0; // Резерв
-
-
-}
-
-
-class Field {
-    int recpos=0;
-    int pos;
-    int lengh;
-    String name = new String();
-    String data = new String();
-    String  tmp = new String();
-
-    void setField(int recpos,int pos, int lengh,String name,String data){
-        this.recpos=recpos;
-        this.pos=pos;
-        this.lengh=lengh;
-        this.name=name;
-        this.data=data;    
+    // Описание заголовка
+    byte vers;	    // Версия 
+    int datapos;    // Адрес начала данных
+    int recleng;    // Длина записи с флагом
+    int reccount;   // Количество записей в базе
+    int fieldpos;   // Адрес описания полей
+    int fieldcount; // Количество полей
+    // Заполнеие заголовка 
+    void setHead(byte vers,int datapos,int recleng, int reccount, int fieldpos, int fieldcount){
+	this.vers 	=vers;
+	this.datapos	=datapos;
+	this.recleng	=recleng;
+	this.reccount	=reccount;
+	this.fieldpos	=fieldpos;
+	this.fieldcount	=fieldcount;
     }
-
-    void write()  throws IOException {
+    // Печать заголовка
+    void printHead(){
+      System.out.println("------------------");
+      System.out.println("Печать заголовка:");
+       System.out.println("vers-      "+vers);
+       System.out.println("datapos-   "+datapos);
+       System.out.println("recleng-   "+recleng);
+       System.out.println("reccount-  "+reccount);
+       System.out.println("fieldpos-  "+fieldpos);
+       System.out.println("fieldcount-"+fieldcount);
+        System.out.println("------------------");
+    }
+    // Запись заголовка на постоянное место в файл
+    void writeHead()  throws IOException {
       try (RandomAccessFile fout = new RandomAccessFile("dbf1.txt","rw")) {
-	fout.seek(recpos+pos);
-	for(int i=0; i<lengh;i++) tmp+='-';
-	fout.writeUTF((data+tmp).substring(0,lengh)); 
+	fout.seek(0);	fout.writeByte(vers);
+	fout.seek(1);	fout.writeInt(datapos);
+	fout.seek(5);	fout.writeInt(recleng);
+	fout.seek(9);	fout.writeInt(reccount);
+	fout.seek(13);	fout.writeInt(fieldpos);
+	fout.seek(18);	fout.writeInt(fieldcount);
+ 	fout.close(); // Закрыть файл!
+      } catch(IOException e) {
+      System.out.println("I/O Error: " + e);
+      }
+    }
+    // Чтение заголовка 
+    void readHead()  throws IOException {
+      try (RandomAccessFile fout = new RandomAccessFile("dbf1.txt","rw")) {
+	fout.seek(0);	vers=fout.readByte();
+	fout.seek(1);	datapos=fout.readInt();
+	fout.seek(5);	recleng=fout.readInt();
+	fout.seek(9);	reccount=fout.readInt();
+	fout.seek(13);	fieldpos=fout.readInt();
+	fout.seek(18);	fieldcount=fout.readInt();
+ 	fout.close(); // Закрыть файл!
+      } catch(IOException e) {
+      System.out.println("I/O Error: " + e);
+      }
+    }
+//-------------------------------------------------------------------------
+    // Описание поля - 24 байта
+    byte ftype;	// Тип данных
+    int fpos;	// Позиция поля в записи
+    int flengh;	// Длина
+    String fname = new String(); // ENG наименование строго 10 байт!
+    // Заполнить описание поля
+    void setField(byte ftype,int fpos, int flengh,String fname){
+        this.ftype=ftype; 
+        this.fpos=fpos;	  
+        this.flengh=flengh;
+        this.fname=fname;  
+    }
+    // Записать описание поля в заголовок файла
+    void writePfield(int fieldnum)  throws IOException {
+      try (RandomAccessFile fout = new RandomAccessFile("dbf1.txt","rw")) {
+	fout.seek(18);	fout.writeInt(fieldcount);
+	fout.seek(fieldpos+32*fieldnum);
+	fout.writeByte(ftype);
+	fout.writeInt(fpos);
+	fout.writeInt(flengh);
+	fout.writeUTF(fname);
 	fout.close(); // Закрыть файл!
       } catch(IOException e) {
       System.out.println("I/O Error: " + e);
       }
   }
-
-    void read()  throws IOException {
-    // Используем класс свободного доступа к файлу
-      try (RandomAccessFile fout = new RandomAccessFile("dbf1.txt","r")) {
-	fout.seek(recpos+pos);
-	data=fout.readUTF(); 
+    // Печать описание поля в заголовке файла
+    void printPfield()  throws IOException {
+      try (RandomAccessFile fout = new RandomAccessFile("dbf1.txt","rw")) {
+        System.out.println("Печать определения полей");
+        System.out.println("----------------------------------------------------------");
+       for(int i=0; i<fieldcount;i++){
+        System.out.print("Поле: "+i);
+	fout.seek(fieldpos+32*i);
+	System.out.print("  ftype-"+fout.read());
+	System.out.print("  fpos-"+fout.readInt());
+	System.out.print("  flengh-"+fout.readInt());
+	System.out.println("  fname-"+fout.readUTF());
+       }	
 	fout.close(); // Закрыть файл!
       } catch(IOException e) {
-        System.out.println("I/O Error: " + e);
+      System.out.println("I/O Error: " + e);
       }
-   }
-
-    void print()  throws IOException {
-    // Печатаем 
-    System.out.println("Печатаем  данные записи");
-    System.out.println(name); 
-    System.out.println(data);
-    System.out.println(data.length());
-    }
-}
-
-class dbrecord {
-      Field fieldx = new Field();
-
-    void writeRecord()  throws IOException {
-      fieldx.setField(0,150,26,"Имя3","Record-Новые Данные"); 
-      fieldx.write();
-    }
-
-    void printRecord()  throws IOException {
-      fieldx.setField(0,150,26,"Имя3","Record-Новые Данные"); 
-      fieldx.read();
-      fieldx.print();
-    }
+      System.out.println("----------------------------------------------------------");
+  }
 }
 
 class dbfields {
   public static void main(String args[]) throws IOException {
+    // Изначально удалим файл, иначе мусор и накладки
+    File filedel = new File("dbf1.txt");
+    if(filedel.delete()){
+        System.out.println("Файл данных удален-очистка!");
+    }
+    // Запозняем заголовок в файле
+    /* Версия,   Адрес начала данных,  Длина записи с флагом, 
+    Количество записей в базе,  Адрес описания полей,  Количество полей
+    */
+    dbHead dbHeadx = new dbHead();
+    dbHeadx.setHead((byte)15,255,32,2,32,5);
+    dbHeadx.writeHead();
+    dbHeadx.readHead();
+    dbHeadx.printHead();
 
-    Field fields = new Field();
-    dbrecord recx = new dbrecord();
-    recx.writeRecord();
-    recx.printRecord();
-
-    fields.setField(0,0,26,"Имя1","data-Новые Данные"); 
-	fields.write();
-	fields.read();
-	fields.print();
-
-    fields.setField(0,64,26,"Имя2","DANABASE-Новые Данные"); 
-	fields.write();
-	fields.read();
-	fields.print();
+    /* Описание поля
+	Тип данных, Позиция поля в записи, Длина, наименование-10Eng 
+    */
+    dbHeadx.setField((byte)5,0,20,"Name1-----");
+    dbHeadx.writePfield(0);
+    dbHeadx.setField((byte)5,0,20,"Name2-----");
+    dbHeadx.writePfield(1);
+    dbHeadx.setField((byte)5,0,20,"Name3-----");
+    dbHeadx.writePfield(2);
+    dbHeadx.setField((byte)5,0,20,"Name4-----");
+    dbHeadx.writePfield(3);
+    dbHeadx.setField((byte)5,0,20,"Name5-----");
+    dbHeadx.writePfield(4);
+    dbHeadx.printPfield();
   }
 }
+
+//	for(int i=0; i<lengh;i++) tmp+='-';
+//	fout.writeUTF((data+tmp).substring(0,lengh)); 
+
