@@ -35,11 +35,11 @@ class Head{
     // Чтение заголовка 
     void readHead()  throws IOException {
       try (RandomAccessFile fout = new RandomAccessFile("dbf1.txt","rw")) {
-	fout.seek(0);	vers=fout.readByte();
-	fout.seek(1);	datapos=fout.readInt();
-	fout.seek(5);	recleng=fout.readInt();
-	fout.seek(9);	reccount=fout.readInt();
-	fout.seek(13);	fieldpos=fout.readInt();
+	fout.seek(0);	vers=      fout.readByte();
+	fout.seek(1);	datapos=   fout.readInt();
+	fout.seek(5);	recleng=   fout.readInt();
+	fout.seek(9);	reccount=  fout.readInt();
+	fout.seek(13);	fieldpos=  fout.readInt();
 	fout.seek(18);	fieldcount=fout.readInt();
  	fout.close(); // Закрыть файл!
       } catch(IOException e) {
@@ -51,11 +51,11 @@ class Head{
         
       try (RandomAccessFile fout = new RandomAccessFile("dbf1.txt","rw")) {
 	// Читаем сам заголовок
-	fout.seek(0);	vers=fout.readByte();
-	fout.seek(1);	datapos=fout.readInt();
-	fout.seek(5);	recleng=fout.readInt();
-	fout.seek(9);	reccount=fout.readInt();
-	fout.seek(13);	fieldpos=fout.readInt();
+	fout.seek(0);	vers=      fout.readByte();
+	fout.seek(1);	datapos=   fout.readInt();
+	fout.seek(5);	recleng=   fout.readInt();
+	fout.seek(9);	reccount=  fout.readInt();
+	fout.seek(13);	fieldpos=  fout.readInt();
 	fout.seek(18);	fieldcount=fout.readInt();
 	// Печатаем его
        System.out.println("------------------");
@@ -73,9 +73,9 @@ class Head{
        for(int i=0; i<fieldcount;i++){
         System.out.print("Поле: "+i);
 	fout.seek(fieldpos+32*i);
-	System.out.print("  ftype-"+fout.readByte());
-	System.out.print("  fpos-"+fout.readInt());
-	System.out.print("  flengh-"+fout.readInt());
+	System.out.print("  ftype-"  +fout.readByte());
+	System.out.print("  fpos-"   +fout.readInt());
+	System.out.print("  flengh-" +fout.readInt());
 	System.out.println("  fname-"+fout.readUTF());
        }	
 	fout.close(); // Закрыть файл!

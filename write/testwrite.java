@@ -1,4 +1,5 @@
 // Test записи различных данных по определенным позициям в файл
+package myPacket;
 import java.io.*;
 
 class testwrite {

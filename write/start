@@ -3,11 +3,14 @@
 clear
 echo ---START---
 echo compile 
-javac ./testwrite.java
+# Указываем свой-же каталог для опции -d
+#  и javac сама создаст там каталог пакета
+javac -d ./  ./*.java
 
 echo RUN
 echo
-java testwrite
+# ... для запуска указываем пакет!
+java myPacket.testwrite
 
 echo
 echo ---END---

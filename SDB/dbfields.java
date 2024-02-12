@@ -3,12 +3,10 @@ import java.io.*;
 
 class dbfields {
   public static void main(String args[]) throws IOException {
-
-    // Запозняем заголовок в файле
-    /* Версия,   Адрес начала данных,  Длина записи с флагом, 
-    Количество записей в базе,  Адрес описания полей,  Количество полей
-    */
     Head dbHeadx = new Head();
+    // Заполняем заголовок в файле
+    // Версия, Адрес начала данных, Длина записи с флагом,
+    // Количество записей в базе, Адрес описания полей, Количество полей
 //    dbHeadx.setHead((byte)15,255,32,2,32,0);
 //    dbHeadx.writeHead();
     dbHeadx.readHead(); // Читаем всегда- это отправная точка работы
@@ -20,7 +18,6 @@ class dbfields {
     dbHeadx.printHead();
   }
 }
-
     // Изначально удалим файл, иначе мусор и накладки
 /*    File filedel = new File("dbf1.txt");
     if(filedel.delete()){

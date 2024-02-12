@@ -3,9 +3,7 @@
 clear
 echo ---START---
 echo compile 
-javac ./Head.java
-javac ./Fields.java
-javac ./dbfields.java
+javac ./*.java
 
 echo RUN
 echo

@@ -2,6 +2,7 @@
 import java.io.*;
 
 class Fields {
+  // Эти две переменные из заголовка переносим себе в этот файл и работаем с ними тут!
     int fieldposx;   // Адрес полей
     int fieldcountx; // Количество полей
     // Описание поля - 24 байта
@@ -41,7 +42,7 @@ class Fields {
 	fout.writeInt(flengh);
 	fout.writeUTF(fname);
         fieldcountx++; // Изменим счетчик полей в заголовке  
-	fout.seek(18);	fout.writeInt(fieldcountx);
+	fout.seek(18);	fout.writeInt(fieldcountx); // Отдельный метод!
 	fout.close(); // Закрыть файл!
       } catch(IOException e) {
       System.out.println("I/O Error: " + e);
