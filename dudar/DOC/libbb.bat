@@ -1,0 +1,3 @@
+javac -sourcepath . *.java
+
+pause

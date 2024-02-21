@@ -1,0 +1,35 @@
+#!/bin/sh
+# Компиллируем и стартуем имеено отсюда, с корня
+clear
+echo ---compile---
+javac -d ./ src/*.java 
+#javac -d ./ -classpath "com;javafx"  src/*.java
+#/snap/openjdk/1674/jdk/bin/javac -d ./ src/*.java 
+#/snap/openjdk/1674/jdk/bin/javac -d ./ -cp "./*.jar"  src/*.java 
+#javac -d ./ src/*.java
+
+echo ---start---
+#java ./sample/AppMain.java
+#/snap/openjdk/1674/jdk/bin/java AppMain.java
+#java AppMain.java
+
+#java sample.AppMain
+#/opt/jdk/bin/java AppMain.java
+
+#java -cp ./javafx,com sample.AppMain
+#java sample.AppMain
+#java AppMain.java
+
+echo ---compile JAR---
+
+jar -cmf MANIFEST.MF AppMain.jar  ./sample ./com ./javafx
+
+echo --RUN JAR---
+java -jar AppMain.jar 
+#/snap/openjdk/1674/jdk/bin/jar -cmf MANIFEST.MF AppMain.jar  ./sample ./com ./javafx
+#/snap/openjdk/1674/jdk/bin/java -jar AppMain.jar -cp javafx,com
+
+echo ---END---
+java -version
+#/snap/openjdk/1674/jdk/bin/java -version
+read a

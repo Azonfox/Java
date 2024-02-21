@@ -3,7 +3,7 @@
 clear
 echo ---START---
 echo compile DATCHIK
-javac ./datchik.java
+javac -g ./datchik.java
 
 echo start datchik.class
 echo

@@ -1,20 +1,21 @@
 #!/bin/sh
 # Компиллируем и стартуем имеено отсюда, с корня
 clear
-echo ---START---
-echo compile Main
-javac ./sample/Main.java
+java -version
 
-echo compile Controller
-javac ./sample/Controller.java
+echo ---compile---
+javac -d ./ src/*.java 
 
-echo compile Questions
-javac ./sample/Questions.java
+echo ---start---
 
-echo start!
-echo Не работает:    java sample.Main
-echo Но Работает:    java Main.java ...........
-java Main.java
+#java sample.AppMain
+#java AppMain.java
+
+echo ---compile JAR---
+jar -cmf MANIFEST.MF AppMain.jar  ./sample ./com ./javafx
+
+echo --RUN JAR---
+java -jar AppMain.jar 
 
 echo ---END---
 read a

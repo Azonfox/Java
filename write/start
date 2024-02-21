@@ -5,7 +5,7 @@ echo ---START---
 echo compile 
 # Указываем свой-же каталог для опции -d
 #  и javac сама создаст там каталог пакета
-javac -d ./  ./*.java
+javac -g -d ./  ./*.java
 
 echo RUN
 echo

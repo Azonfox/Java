@@ -1,4 +1,29 @@
-Для запуска:
-./*start
-Правильно - java samle.Main 
-из каталога ./dudar/
+Для запуска:  ./*start
+Правильно - java samle.Main из каталога ./dudar/
+
+Работа в Linux Debian 12:
+Изначально работало java Main.java, что не правильно!
+JAR не работал,и... ошибки, ошибки, ошибки...
+JavaFX не подошла ни одна, скачано гигабайты SDK и JavaFX,
+испробованы десятки вариантов запуска и расположения,
+испробованы разные версии...
+
+Но при построении и запуске в Windows все работало хорошо!
+
+Новые версии SDK уже не содержали JAVAFX!!!!
+
+Решение было в установке сборки SDK+javaFX от AZUL.
+   www.azul.com/downloads/#zulu
+Данная сборка скачана в виде архива, а не DEB файла,
+и разархивирована в каталог /OPT/JAVA/
+Для настройки прописаны пути в
+/etc/profile.d/jdk_home.sh  и
+~/.bashrc
+
+    export JAVA_HOME=/opt/java/
+    export PATH=$JAVA_HOME/bin:$PATH
+
+с последующим перезапуском
+source /etc/profile.d/jdk_home.sh и
+source ~/.bashrc
+
