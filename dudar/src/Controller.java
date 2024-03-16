@@ -34,15 +34,13 @@ public class Controller {
     @FXML
     private Button answerBtn;
 
+   // Выход из приложения
     @FXML
     private Button btnExit;
-   // ВЫход из приложения
     public void btnExitClick(ActionEvent event) {
 	System.exit(0);
     }
-
-
-
+    // Обработка вопросов
     private Questions[] questions = new Questions[] {
             new Questions("В каком из вариантов представлен корректный формат вывода информации на экран?", new String[] {"Console.Write()", "console.log()", "print()", "System.out.println()"}),
             new Questions("Какой тип данных отвечает за целые числа?", new String[] {"String", "Float", "Boolean", "Integer"}),
@@ -58,9 +56,6 @@ public class Controller {
     @FXML
     public void initialize() {
         nowCorrectAnswer = questions[nowQuestion].correctAnswer();
-
-
-
         answerBtn.setOnAction(e -> {
             RadioButton selectedRadioButton = (RadioButton) answers.getSelectedToggle();
             if(selectedRadioButton != null) {

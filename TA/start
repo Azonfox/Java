@@ -1,0 +1,21 @@
+#!/bin/sh
+# Компиллируем и стартуем имеено отсюда, с корня
+clear
+java -version
+
+echo ---compile---
+javac -d ./ src/*.java 
+
+echo ---start---
+
+#java sample.AppMain
+#java AppMain.java
+
+echo ---compile JAR---
+jar -cmf MANIFEST.MF AppMain.jar  ./sample ./com ./javafx
+
+echo ---RUN JAR---
+java -jar AppMain.jar 
+
+echo ---END---
+read a
