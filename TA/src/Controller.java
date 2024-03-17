@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
-import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.io.*;
 
@@ -20,11 +19,10 @@ public class Controller {
 
     // Считывание файла в TextArea
     public void btnTextClick(ActionEvent event) throws IOException {
-
-       GregorianCalendar data1 = new GregorianCalendar();
-       System.out.println(data1.get(GregorianCalendar.DAY_OF_MONTH)); ///////
-
-	// Проверка пароля и соответствующее имя файла
+	// Работаем с датой в Calendar
+        GregorianCalendar data1 = new GregorianCalendar();
+        System.out.println(data1.get(GregorianCalendar.DAY_OF_MONTH)); ///////////
+	// Проверка пароля и формирование соответствующего имени файла
 	if(txtArea.getText().equals("azfox"+data1.get(GregorianCalendar.DAY_OF_MONTH))) {
 	    pass=true;
 	    txtText.setText("Записная книжка.");
@@ -62,15 +60,15 @@ public class Controller {
 
     // Выход из приложения с записью TextArea  в файл
     public void btnExitClick(ActionEvent event) {
+      // Если в TextArea ничего не менялось-просто выходим!
+      if(!txtArea.getText().equals(" Ваш текст...")) {
 	// Проверка пароля
-	if(pass)
-	    namefile="st.txt";
-	else
-	    namefile="brrr.txt";
-	// Если файла нет то создаем, и пишем в него из TexArea
-      try {
+	if(pass) namefile="st.txt";
+	 else    namefile="brrr.txt";
+        // Если файла нет то создаем, и пишем в него из TexArea
+       try {
 	File file = new File(namefile);
-	if(!file.exists())
+	if(!file.exists()) 
 	   file.createNewFile();
 	PrintWriter pw = new PrintWriter(file);
 	pw.print(txtArea.getText());
@@ -78,8 +76,9 @@ public class Controller {
         } catch(IOException e) {
         System.out.println("I/O Error: " + e);
         }
+      }
 	// Выводим в терминал TextArea  как отладку
-	System.out.println(txtArea.getText());
+	System.out.println(txtArea.getText()); //////////////////////////////
 	// Выход из приложения
 	System.exit(0);
     }
