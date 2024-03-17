@@ -30,7 +30,7 @@
       </Text>
 
       <TextArea fx:id="txtArea" wrapText="true" layoutX="30.0" layoutY="50.0"  
-         prefHeight="300.0" prefWidth="300.0" text="Пример окна редактора">
+         prefHeight="300.0" prefWidth="300.0" text=" Ваш текст...">
          <font>
             <Font name="Montserrat Bold" size="16.0" />
          </font>
@@ -39,7 +39,7 @@
       <Button fx:id="btnText"  onAction="#btnTextClick"  layoutX="50.0" layoutY="370.0" 
          mnemonicParsing="false" prefHeight="29.0" prefWidth="260.0" 
          style="-fx-background-color: #f7746a; -fx-border-color: #f7746a; -fx-border-radius: 5px;" 
-         stylesheets="@styles/main.css" text="Input Text" textFill="WHITE">
+         stylesheets="@styles/main.css" text="Читать файл" textFill="WHITE">
          <font>
             <Font name="Montserrat Regular" size="13.0" />
          </font>

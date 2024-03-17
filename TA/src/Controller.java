@@ -22,34 +22,47 @@ public class Controller {
     @FXML  private Button btnText;
     private String msg;
 
+    // Считывание файла в TextArea
     public void btnTextClick(ActionEvent event) throws IOException {
 	BufferedReader br = null; 
-//      msg="qqqqqqqqqq";
       try {
 	File file = new File("st.txt");
-	// Если файла нет то создаем и пишем в него
+	// Если файла нет то создаем и пишем в него сообщение
 	if(!file.exists()) {
 	  file.createNewFile();
 	  PrintWriter pw = new PrintWriter(file);
-	  pw.println("Файл создан заново!");
+	  pw.println("Ваш текст..");
           pw.close(); // Закрыть файл!
 	}
 	// Читаем файл в TextArea
 	br = new BufferedReader(new FileReader("st.txt"));
+	// Читаем построчно и добавляем конец строки
 	String line;
+        msg="";
 	while((line=br.readLine()) !=null)
 	    msg=msg+line+"\n";
-	    
       } catch(IOException e) {
       	System.out.println("I/O Error: " + e);
       } finally {
         br.close();
       }
-      txtArea.setText(msg);
+      txtArea.setText(msg); // Записываем в TextArea
    }
 
+    // Выход из приложения с записью TextArea  в файл
     public void btnExitClick(ActionEvent event) {
-	// Выводим в терминал набранный текст
+	// Если файла нет то создаем, и пишем в него из TexArea
+      try {
+	File file = new File("st.txt");
+	if(!file.exists())
+	   file.createNewFile();
+	PrintWriter pw = new PrintWriter(file);
+	pw.println(txtArea.getText());
+        pw.close(); // Закрыть файл!
+        } catch(IOException e) {
+        System.out.println("I/O Error: " + e);
+        }
+	// Выводим в терминал набранный текст как отладку
 	System.out.println(txtArea.getText());
 	// Выход из приложения
 	System.exit(0);
