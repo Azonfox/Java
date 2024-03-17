@@ -22,7 +22,7 @@
    
    <children>
 
-      <Text fill="#434343" layoutX="30.0" layoutY="30.0" 
+      <Text fx:id="txtText" fill="#434343" layoutX="30.0" layoutY="30.0" 
          strokeType="OUTSIDE" strokeWidth="0.0" text="Пример программы">
          <font>
             <Font name="Montserrat Bold" size="29.0" />
