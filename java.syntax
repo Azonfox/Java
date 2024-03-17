@@ -81,6 +81,7 @@ context default
     keyword whole while yellow
     keyword whole System.out.println brightred
     keyword whole @FXML  brightmagenta
+    keyword whole String yellow
 
     keyword /\*  brightgreen
     keyword \*/  brightgreen

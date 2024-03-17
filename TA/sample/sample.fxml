@@ -44,7 +44,7 @@
       <Button fx:id="btnExit"  onAction="#btnExitClick"  layoutX="50.0" layoutY="410.0" 
          mnemonicParsing="false" prefHeight="29.0" prefWidth="260.0" 
          style="-fx-background-color: #f7746a; -fx-border-color: #f7746a; -fx-border-radius: 5px;" 
-         stylesheets="@styles/main.css" text="Выход" textFill="WHITE">
+         stylesheets="@styles/main.css" text="Сохранить и выйти" textFill="WHITE">
          <font>
             <Font name="Montserrat Regular" size="13.0" />
          </font>

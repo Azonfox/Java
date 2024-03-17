@@ -19,6 +19,7 @@ public class Controller {
 
     // Считывание файла в TextArea
     public void btnTextClick(ActionEvent event) throws IOException {
+	
 	// Работаем с датой в Calendar
         GregorianCalendar data1 = new GregorianCalendar();
         System.out.println(data1.get(GregorianCalendar.DAY_OF_MONTH)); ///////////
