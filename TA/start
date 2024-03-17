@@ -3,11 +3,10 @@
 clear
 java -version
 
-echo ---compile---
+echo ---compile class---
 javac -d ./ src/*.java 
 
-echo ---start---
-
+#echo ---start---
 #java sample.AppMain
 #java AppMain.java
 

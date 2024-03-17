@@ -14,17 +14,22 @@ import java.util.List;
 
 public class Controller {
 
-    @FXML
-    private Text question_text;
-    
-    @FXML
-    private TextArea  txtArea;
+    @FXML  private Text question_text;
+    @FXML  private TextArea  txtArea;
+    @FXML  private Button btnExit;
+    @FXML  private Button btnText;
+    private String msg;
 
-   // Выход из приложения
-    @FXML
-    private Button btnExit;
+    public void btnTextClick(ActionEvent event) {
+	// Выводим в TextArea  msg текст
+	msg="Новейший текст MSG InputButton";
+        txtArea.setText(msg);
+    }
+
     public void btnExitClick(ActionEvent event) {
+	// Выводим в терминал набранный текст
 	System.out.println(txtArea.getText());
+	// Выход из приложения
 	System.exit(0);
     }
 }
