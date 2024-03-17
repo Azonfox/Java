@@ -3,19 +3,13 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
-
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+import java.util.GregorianCalendar;
 import java.io.*;
 
-
 public class Controller {
-
     @FXML  private Text txtText;
     @FXML  private TextArea  txtArea;
     @FXML  private Button btnExit;
@@ -26,17 +20,20 @@ public class Controller {
 
     // Считывание файла в TextArea
     public void btnTextClick(ActionEvent event) throws IOException {
-	 txtText.setText("Редактор текста");
+
+       GregorianCalendar data1 = new GregorianCalendar();
+       System.out.println(data1.get(GregorianCalendar.DAY_OF_MONTH)); ///////
+
 	// Проверка пароля и соответствующее имя файла
-	if(txtArea.getText().equals("azfox"))
+	if(txtArea.getText().equals("azfox"+data1.get(GregorianCalendar.DAY_OF_MONTH))) {
 	    pass=true;
-	else
+	    txtText.setText("Записная книжка.");
+	} else {
 	    pass=false;
-	if(pass)
-	    namefile="st.txt"; // истинное имя файла
-	else 
-	    namefile="brrr.txt"; // левый файл
-      System.out.println(namefile);
+	    txtText.setText("Записная книжка");
+	} 
+	namefile = pass ? "st.txt" : "brrr.txt";
+       System.out.println(namefile); //////////////////////////
 
 	BufferedReader br = null; 
       try {
@@ -45,7 +42,7 @@ public class Controller {
 	if(!file.exists()) {
 	  file.createNewFile();
 	  PrintWriter pw = new PrintWriter(file);
-	  pw.println("Ваш текст..");
+	  pw.print("Ваш текст..");
           pw.close(); // Закрыть файл!
 	}
 	// Читаем файл в TextArea
@@ -76,12 +73,12 @@ public class Controller {
 	if(!file.exists())
 	   file.createNewFile();
 	PrintWriter pw = new PrintWriter(file);
-	pw.println(txtArea.getText());
+	pw.print(txtArea.getText());
         pw.close(); // Закрыть файл!
         } catch(IOException e) {
         System.out.println("I/O Error: " + e);
         }
-	// Выводим в терминал набранный текст как отладку
+	// Выводим в терминал TextArea  как отладку
 	System.out.println(txtArea.getText());
 	// Выход из приложения
 	System.exit(0);

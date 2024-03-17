@@ -22,8 +22,8 @@
    
    <children>
 
-      <Text fx:id="txtText" fill="#434343" layoutX="30.0" layoutY="30.0" 
-         strokeType="OUTSIDE" strokeWidth="0.0" text="Пример программы">
+      <Text fx:id="txtText" fill="#434343" layoutX="55.0" layoutY="30.0" 
+         strokeType="OUTSIDE" strokeWidth="0.0" text="Записная книжка">
          <font>
             <Font name="Montserrat Bold" size="29.0" />
          </font>
