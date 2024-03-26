@@ -1,0 +1,352 @@
+﻿Для шифрования и расшифровки текста использовал код, найденный в интернете:
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.Arrays;
+public static byte[] crypt(int mode, byte[] value, String secret) throws Exception {
+    byte[] key = secret.getBytes(StandardCharsets.UTF_8);
+    MessageDigest sha = MessageDigest.getInstance("SHA-1");
+    key = sha.digest(key);
+    key = Arrays.copyOf(key, 16);
+    SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
+
+    Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+    cipher.init(mode, secretKey);
+
+    return cipher.doFinal(value);
+}
+Для шифрования:
+
+qwe = new String(crypt(Cipher.ENCRYPT_MODE, (Текст).getBytes(StandardCharsets.UTF_8), ключ));
+Для расшифровки:
+
+qwe1 = new String(crypt(Cipher.DECRYPT_MODE, зашифрованный_текст_Типа_byte[], ключ), StandardCharsets.UTF_8);
+Ключ пользователь вводит любой. Шифрование полностью работает. Но при расшифровке возникла проблемма.
+
+Зашифрованный текст записывается в переменную типа string, а требуется byte[]. Конвертировать string в byte[] у меня не получилось, также как и из поля ввода текста зашифрованный текст передавать в byte[].
+
+Что тут можно сделать?
+------
+
+
+
+-----
+
+В вашем случае можно сделать так
+
+qwe = new String(crypt(Cipher.ENCRYPT_MODE, (Текст).getBytes(StandardCharsets.UTF_8), ключ));
+Для расшифровки:
+
+qwe1 = new String(crypt(Cipher.DECRYPT_MODE, qwe.getBytes(StandardCharsets.UTF_8), ключ), StandardCharsets.UTF_8);
+
+--------
+Можно дополнительно кодировать эти иероглифы в BASE64, HEX или любую другую кодировку, переводящую бинарные данные в печатные символы - тогда проблем с копипастом не будет.
+
+-------
+
+public class Solution {
+
+    private static final String key = "aesEncryptionKey";
+    private static final String initVector = "encryptionIntVec";
+
+    public static void main(String[] args) {
+        String originalString = "password";
+        System.out.println("Original String to encrypt - " + originalString);
+        String encryptedString = encrypt(originalString);
+        System.out.println("Encrypted String - " + encryptedString);
+        String decryptedString = decrypt(encryptedString);
+        System.out.println("After decryption - " + decryptedString);
+    }
+
+    public static String decrypt(String encrypted) {
+        try {
+            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(StandardCharsets.UTF_8));
+            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
+
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
+            byte[] original = cipher.doFinal(Base64.getDecoder().decode(encrypted));
+
+            return new String(original);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String encrypt(String value) {
+        try {
+            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(StandardCharsets.UTF_8));
+            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
+
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
+
+            byte[] encrypted = cipher.doFinal(value.getBytes());
+            return Base64.getEncoder().encodeToString(encrypted);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+}
+
+-------
+
+https://www.baeldung.com/java-string-to-byte-array
+
+Нам часто приходится конвертировать строку в массив байтов  в Java. В этом уроке мы подробно рассмотрим эти операции.
+
+
+Сначала мы рассмотрим различные способы преобразования строки в массив байтов . Затем мы рассмотрим аналогичные операции в обратном порядке.
+
+2. Преобразование строки в байтовый массив
+В Java строка  хранится как массив символов Юникода . Чтобы преобразовать его в  массив байтов , мы переводим последовательность символов в последовательность байтов. Для этого перевода мы используем экземпляр Charset . Этот класс определяет сопоставление между последовательностью char и последовательностью byte s .
+
+Мы называем вышеописанный процесс кодированием .
+
+В Java мы можем закодировать строку в массив байтов несколькими способами. Давайте рассмотрим каждый из них подробно на примерах.
+
+2.1. Использование  String.getBytes()
+Класс String предоставляет три перегруженных  метода getBytes для кодирования строки в массив байтов :
+
+getBytes() – кодирует, используя кодировку платформы по умолчанию.
+getBytes (String charsetName) – кодирует с использованием именованного набора символов
+getBytes (кодировка Charset) – кодирует с использованием предоставленной кодировки
+Сначала давайте закодируем строку, используя кодировку платформы по умолчанию:
+
+String inputString = "Hello World!";
+byte[] byteArrray = inputString.getBytes();
+Копировать
+Вышеупомянутый метод зависит от платформы, поскольку он использует кодировку платформы по умолчанию. Мы можем получить эту кодировку, вызвав Charset.defaultCharset() .
+
+Затем давайте закодируем строку, используя именованную кодировку:
+
+@Test
+public void whenGetBytesWithNamedCharset_thenOK() 
+  throws UnsupportedEncodingException {
+    String inputString = "Hello World!";
+    String charsetName = "IBM01140";
+
+    byte[] byteArrray = inputString.getBytes("IBM01140");
+    
+    assertArrayEquals(
+      new byte[] { -56, -123, -109, -109, -106, 64, -26,
+        -106, -103, -109, -124, 90 },
+      byteArrray);
+}
+Копировать
+Этот метод генерирует исключение UnsupportedEncodingException , если указанная кодировка не поддерживается.
+
+Поведение двух вышеупомянутых версий не определено, если входные данные содержат символы, которые не поддерживаются кодировкой. Напротив, третья версия использует массив заменяющих байтов набора символов по умолчанию для кодирования неподдерживаемого ввода.
+
+Далее давайте вызовем третью версию метода getBytes() и передадим экземпляр Charset:
+
+@Test
+public void whenGetBytesWithCharset_thenOK() {
+    String inputString = "Hello ਸੰਸਾਰ!";
+    Charset charset = Charset.forName("ASCII");
+
+    byte[] byteArrray = inputString.getBytes(charset);
+
+    assertArrayEquals(
+      new byte[] { 72, 101, 108, 108, 111, 32, 63, 63, 63,
+        63, 63, 33 },
+      byteArrray);
+}
+Копировать
+Здесь мы используем фабричный метод Charset.forName для получения экземпляра Charset . Этот метод генерирует исключение времени выполнения, если имя запрошенной кодировки недопустимо. Он также генерирует исключение во время выполнения, если набор символов поддерживается в текущей JVM.
+
+Однако некоторые наборы символов гарантированно доступны на каждой платформе Java. Класс StandardCharsets определяет константы для этих наборов символов.
+
+Наконец, давайте закодируем, используя одну из стандартных кодировок:
+
+@Test
+public void whenGetBytesWithStandardCharset_thenOK() {
+    String inputString = "Hello World!";
+    Charset charset = StandardCharsets.UTF_16;
+
+    byte[] byteArrray = inputString.getBytes(charset);
+
+    assertArrayEquals(
+      new byte[] { -2, -1, 0, 72, 0, 101, 0, 108, 0, 108, 0,
+        111, 0, 32, 0, 87, 0, 111, 0, 114, 0, 108, 0, 100, 0, 33 },
+      byteArrray);
+}
+Копировать
+На этом мы завершили обзор различных версий getBytes . Далее давайте рассмотрим метод, предоставляемый самим Charset  .
+
+2.2. Использование  Charset.encode()
+Класс Charset предоставляет  encode() — удобный метод, который кодирует символы Юникода в байты. Этот метод всегда заменяет недопустимые входные и несопоставимые символы, используя массив байтов замены по умолчанию для кодировки.
+
+Давайте воспользуемся методом encode для преобразования строки в массив байтов :
+
+@Test
+public void whenEncodeWithCharset_thenOK() {
+    String inputString = "Hello ਸੰਸਾਰ!";
+    Charset charset = StandardCharsets.US_ASCII;
+
+    byte[] byteArrray = charset.encode(inputString).array();
+
+    assertArrayEquals(
+      new byte[] { 72, 101, 108, 108, 111, 32, 63, 63, 63, 63, 63, 33 },
+      byteArrray);
+}
+Копировать
+Как мы видим выше, неподдерживаемые символы были заменены байтом замены по умолчанию  63 .
+
+Подходы, которые мы использовали до сих пор, используют класс CharsetEncoder для внутреннего кодирования. Давайте рассмотрим этот класс в следующем разделе.
+
+2.3. CharsetEncoder
+CharsetEncoder преобразует символы Юникода в последовательность байтов для заданной кодировки . Более того, он обеспечивает детальный контроль над процессом кодирования .
+
+Давайте используем этот класс для преобразования строки в массив байтов :
+
+@Test
+public void whenUsingCharsetEncoder_thenOK()
+  throws CharacterCodingException {
+    String inputString = "Hello ਸੰਸਾਰ!";
+    CharsetEncoder encoder = StandardCharsets.US_ASCII.newEncoder();
+    encoder.onMalformedInput(CodingErrorAction.IGNORE)
+      .onUnmappableCharacter(CodingErrorAction.REPLACE)
+      .replaceWith(new byte[] { 0 });
+
+    byte[] byteArrray = encoder.encode(CharBuffer.wrap(inputString))
+                          .array();
+
+    assertArrayEquals(
+      new byte[] { 72, 101, 108, 108, 111, 32, 0, 0, 0, 0, 0, 33 },
+      byteArrray);
+}
+Копировать
+Здесь мы создаем экземпляр CharsetEncoder , вызывая метод newEncoder  для объекта Charset .
+
+Затем мы указываем действия для условий ошибки, вызывая методы onMalformedInput() и onUnmappableCharacter()  .  Мы можем указать следующие действия:
+
+ИГНОРИРОВАТЬ – удалить ошибочный ввод
+ЗАМЕНИТЬ – заменить ошибочный ввод
+ОТЧЕТ – сообщите об ошибке, вернув объект CoderResult или выдав исключение CharacterCodingException.
+Кроме того, мы используем метод replaceWith() для указания массива замещающих байтов .
+
+Итак, мы завершили обзор различных подходов преобразования String в массив байтов. Далее рассмотрим обратную операцию.
+
+3. Преобразование байтового массива в строку
+Мы называем процесс преобразования массива байтов в строку декодированием . Подобно кодированию, для этого процесса требуется Charset .
+
+Однако мы не можем просто использовать любую кодировку для декодирования массива байтов. В частности, мы должны использовать кодировку, которая закодировала строку  в массив байтов .
+
+Мы также можем преобразовать массив байтов в строку разными способами. Давайте рассмотрим каждый из них подробно.
+
+3.1. Использование конструктора строк
+Класс String имеет несколько конструкторов, которые принимают на вход массив байтов . Все они похожи на метод getBytes , но работают в обратном порядке.
+
+Итак , давайте преобразуем массив байтов в строку , используя кодировку платформы по умолчанию:
+
+@Test
+public void whenStringConstructorWithDefaultCharset_thenOK() {
+    byte[] byteArrray = { 72, 101, 108, 108, 111, 32, 87, 111, 114,
+      108, 100, 33 };
+    
+    String string = new String(byteArrray);
+    
+    assertNotNull(string);
+}
+Копировать
+Обратите внимание: здесь мы ничего не утверждаем о содержимом декодированной строки. Это связано с тем, что он может декодироваться во что-то другое, в зависимости от кодировки платформы по умолчанию.
+
+По этой причине нам вообще следует избегать этого метода.
+
+Затем давайте воспользуемся именованной кодировкой для декодирования:
+
+@Test
+public void whenStringConstructorWithNamedCharset_thenOK()
+    throws UnsupportedEncodingException {
+    String charsetName = "IBM01140";
+    byte[] byteArrray = { -56, -123, -109, -109, -106, 64, -26, -106,
+      -103, -109, -124, 90 };
+
+    String string = new String(byteArrray, charsetName);
+        
+    assertEquals("Hello World!", string);
+}
+Копировать
+Этот метод генерирует исключение, если указанный набор символов недоступен в JVM.
+
+Далее давайте воспользуемся объектом Charset для декодирования:
+
+@Test
+public void whenStringConstructorWithCharSet_thenOK() {
+    Charset charset = Charset.forName("UTF-8");
+    byte[] byteArrray = { 72, 101, 108, 108, 111, 32, 87, 111, 114,
+      108, 100, 33 };
+
+    String string = new String(byteArrray, charset);
+
+    assertEquals("Hello World!", string);
+}
+Копировать
+Наконец, давайте воспользуемся стандартным набором символов :
+
+@Test
+public void whenStringConstructorWithStandardCharSet_thenOK() {
+    Charset charset = StandardCharsets.UTF_16;
+        
+    byte[] byteArrray = { -2, -1, 0, 72, 0, 101, 0, 108, 0, 108, 0,
+      111, 0, 32, 0, 87, 0, 111, 0, 114, 0, 108, 0, 100, 0, 33 };
+
+    String string = new String(byteArrray, charset);
+
+    assertEquals("Hello World!", string);
+}
+Копировать
+До сих пор мы преобразовывали массив байтов в строку с помощью конструктора, а теперь рассмотрим другие подходы.
+
+3.2. Использование  Charset.decode()
+Класс Charset предоставляет метод decode() , который преобразует ByteBuffer в String :
+
+@Test
+public void whenDecodeWithCharset_thenOK() {
+    byte[] byteArrray = { 72, 101, 108, 108, 111, 32, -10, 111,
+      114, 108, -63, 33 };
+    Charset charset = StandardCharsets.US_ASCII;
+    String string = charset.decode(ByteBuffer.wrap(byteArrray))
+                      .toString();
+
+    assertEquals("Hello �orl�!", string);
+}
+Копировать
+Здесь неверный ввод заменяется символом замены по умолчанию для набора символов.
+
+3.3. CharsetDecoder
+Обратите внимание, что все предыдущие подходы к внутреннему декодированию используют класс CharsetDecoder  . Мы можем использовать этот класс напрямую для детального управления процессом декодирования :
+
+@Test
+public void whenUsingCharsetDecoder_thenOK()
+  throws CharacterCodingException {
+    byte[] byteArrray = { 72, 101, 108, 108, 111, 32, -10, 111, 114,
+      108, -63, 33 };
+    CharsetDecoder decoder = StandardCharsets.US_ASCII.newDecoder();
+
+    decoder.onMalformedInput(CodingErrorAction.REPLACE)
+      .onUnmappableCharacter(CodingErrorAction.REPLACE)
+      .replaceWith("?");
+
+    String string = decoder.decode(ByteBuffer.wrap(byteArrray))
+                      .toString();
+
+    assertEquals("Hello ?orl?!", string);
+}
+Копировать
+Здесь мы заменяем недопустимые входные данные и неподдерживаемые символы на «?».
+
+Если мы хотим получать информацию в случае неверных входных данных, мы можем изменить декодер :
+
+decoder.onMalformedInput(CodingErrorAction.REPORT)
+  .onUnmappableCharacter(CodingErrorAction.REPORT)
+Копировать
+4. Вывод
+В этой статье мы исследовали несколько способов преобразования строки в массив байтов и наоборот. Мы должны выбрать подходящий метод на основе входных данных, а также уровня контроля, необходимого для недопустимых входных данных.
+
+Как обычно, полный исходный код можно найти  на GitHub .

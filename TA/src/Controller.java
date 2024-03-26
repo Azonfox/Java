@@ -17,6 +17,11 @@ public class Controller {
     private String namefile;
     private boolean  pass;
 
+    @FXML void initialize(){
+	// Срабатывает при запуске окна
+      	System.out.println("Initialize");
+    }
+
     // Считывание файла в TextArea
     public void btnTextClick(ActionEvent event) throws IOException {
 	
