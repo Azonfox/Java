@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+   prefHeight="450.0" prefWidth="360.0" style="-fx-background-color: #F4F7FB;" 
+   xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" 
+   fx:controller="sample.Controller">
+   
+   <children>
+
+      <Text fx:id="txtText" fill="#434343" layoutX="55.0" layoutY="30.0" 
+         strokeType="OUTSIDE" strokeWidth="0.0" text="Записная книжка">
+         <font>
+            <Font name="Montserrat Bold" size="29.0" />
+         </font>
+      </Text>
+
+      <TextArea fx:id="txtArea" wrapText="true" layoutX="30.0" layoutY="50.0"  
+         prefHeight="300.0" prefWidth="300.0" text=" Ваш текст...">
+         <font>
+            <Font name="Montserrat Bold" size="16.0" />
+         </font>
+      </TextArea>
+
+      <Button fx:id="btnText"  onAction="#btnTextClick"  layoutX="50.0" layoutY="370.0" 
+         mnemonicParsing="false" prefHeight="29.0" prefWidth="260.0" 
+         style="-fx-background-color: #f7746a; -fx-border-color: #f7746a; -fx-border-radius: 5px;" 
+         stylesheets="@styles/main.css" text="Читать файл" textFill="WHITE">
+         <font>
+            <Font name="Montserrat Regular" size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+
+      <Button fx:id="btnExit"  onAction="#btnExitClick"  layoutX="50.0" layoutY="410.0" 
+         mnemonicParsing="false" prefHeight="29.0" prefWidth="260.0" 
+         style="-fx-background-color: #f7746a; -fx-border-color: #f7746a; -fx-border-radius: 5px;" 
+         stylesheets="@styles/main.css" text="Сохранить и выйти" textFill="WHITE">
+         <font>
+            <Font name="Montserrat Regular" size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+
+
+   </children>
+</AnchorPane>
